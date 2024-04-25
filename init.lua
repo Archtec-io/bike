@@ -45,31 +45,43 @@ local green_dye = "dye:green"
 local blue_dye = "dye:blue"
 local container = "default:glass"
 
-if minetest.get_modpath("technic") ~= nil then
+if minetest.get_modpath("technic") then
 	rubber = "technic:rubber"
 end
 
-if minetest.get_modpath("vessels") ~= nil then
+if minetest.get_modpath("vessels") then
 	container = "vessels:glass_bottle"
 end
 
-if minetest.get_modpath("mcl_core") ~= nil then
+if minetest.get_modpath("mcl_core") then
 	iron = "mcl_core:iron_ingot"
 	container = "mcl_core:glass"
 end
 
-if minetest.get_modpath("mcl_rubber") ~= nil then
+if minetest.get_modpath("mcl_rubber") then
 	rubber = "mcl_rubber:rubber"
 end
 
-if minetest.get_modpath("mcl_dye") ~= nil then
+if minetest.get_modpath("mcl_dye") then
 	red_dye = "mcl_dye:red"
 	green_dye = "mcl_dye:green"
 	blue_dye = "mcl_dye:blue"
 end
 
-if minetest.get_modpath("mcl_potions") ~= nil then
+if minetest.get_modpath("mcl_potions") then
 	container = "mcl_potions:glass_bottle"
+end
+
+if minetest.get_modpath("rp_default") then
+	iron = "rp_default:ingot_steel" 
+	red_dye = "rp_default:flower" -- RePixture does not have dyes so they are flowers
+	green_dye = "rp_default:flower" -- in the recipe we use 3 x red_dye because they are all the same
+	blue_dye = "rp_default:flower"
+	container = "rp_default:glass"
+end
+
+if minetest.get_modpath("rp_paint") then
+	container = "rp_paint:bucket_0"
 end
 
 for _, mod in pairs(skin_mods) do
@@ -843,6 +855,47 @@ minetest.register_tool("bike:painter", {
 	on_secondary_use = show_painter_form,
 })
 
+-- Bike crafting recipes
+if minetest.get_modpath("rp_crafting") then -- RePixture specific craft recipes
+
+crafting.register_craft({
+	output = "bike:wheel 2",
+	items = {
+		rubber.." 4",
+		iron,
+	},
+})
+
+crafting.register_craft({
+	output = "bike:handles",
+	items = {
+		iron.." 3",
+		rubber.." 2",
+	},
+})
+
+crafting.register_craft({
+	output = "bike:bike",
+	items = {
+		"bike:handles",
+		rubber,
+		iron.." 3",
+		"bike:wheel 2",
+	},
+})
+
+crafting.register_craft({
+	output = "bike:painter",
+	items = {
+		container,
+		iron.." 3",
+		red_dye.." 3", -- all rp_default:flower
+		rubber,
+	},
+})
+
+else -- do normal craft recipes
+
 minetest.register_craft({
 	output = "bike:wheel 2",
 	recipe = {
@@ -877,3 +930,5 @@ minetest.register_craft({
 		{"", rubber, blue_dye},
 	},
 })
+
+end -- crafting
