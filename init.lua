@@ -5,7 +5,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 -- Skin mod detection
 local skin_mod
 
-local skin_mods = {"skinsdb", "skins", "u_skins", "simple_skins", "wardrobe"}
+local skin_mods = {"skinsdb", "skins", "u_skins", "simple_skins", "wardrobe", "rp_player_skins"}
 
 -- local settings
 local setting_max_speed = tonumber(minetest.settings:get("bike_max_speed")) or 6.9
@@ -94,15 +94,19 @@ end
 local function get_player_skin(player)
 	local name = player:get_player_name()
 	local armor_tex = ""
-	if minetest.global_exists("armor") then
-		-- Filter out helmet (for bike helmet) and boots/shield (to not mess up UV mapping)
-		local function filter(str, find)
-			for _,f in pairs(find) do
-				str = str:gsub("%^"..f.."_(.-.png)", "")
-			end
-			return str
+	-- Function to filter out helmet (for bike helmet) and boots/shield (to not mess up UV mapping)
+	local function filter(str, find)
+		for _,f in pairs(find) do
+			str = str:gsub("%^"..f.."_(.-.png)", "")
 		end
+		return str
+	end
+	if minetest.get_modpath("3d_armor") then
+		-- remove shield, boots and helmet, leggings and chestplate remain visible
 		armor_tex = filter("^"..armor.textures[name].armor, {"shields_shield", "3d_armor_boots", "3d_armor_helmet"})
+	elseif minetest.get_modpath("rp_player") then
+		-- remove boots, helmet and skin stuff, only keeping/visible armor is chestplate
+		armor_tex = filter("^"..rp_player.player_get_textures(player)[1], {"player_skins", "armor_boots", "armor_helmet"})
 	end
 	-- Return the skin with armor (if applicable)
 	if skin_mod == "skinsdb" then
@@ -113,10 +117,12 @@ local function get_player_skin(player)
 		return u_skins.u_skins[name]..".png"..armor_tex
 	elseif skin_mod == "wardrobe" and wardrobe.playerSkins and wardrobe.playerSkins[name] then
 		return wardrobe.playerSkins[name]..armor_tex
+	elseif skin_mod == "rp_player_skins" and player_skins.get_skin(name) then
+		return player_skins.get_skin(name)..armor_tex
 	end
 	local skin = player:get_properties().textures[1]
 	-- If we just have 3d_armor enabled make sure we get the player skin properly
-	if minetest.global_exists("armor") and armor.get_player_skin then
+	if minetest.get_modpath("3d_armor") and armor.get_player_skin then
 		skin = armor:get_player_skin(name)
 	end
 	return skin..armor_tex
