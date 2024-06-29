@@ -189,17 +189,19 @@ end
 
 -- Entity
 local bike = {
-	physical = true,
-	-- Warning: Do not change the position of the collisionbox top surface,
-	-- lowering it causes the bike to fall through the world if underwater
-	collisionbox = {-0.5, -0.4, -0.5, 0.5, 0.8, 0.5},
-	collide_with_objects = false,
-	visual = "mesh",
-	mesh = "bike.b3d",
-	textures = default_tex("#FFFFFF", 150),
-	stepheight = setting_stepheight,
+	initial_properties = {
+		physical = true,
+		-- Warning: Do not change the position of the collisionbox top surface,
+		-- lowering it causes the bike to fall through the world if underwater
+		collisionbox = {-0.4, -0.4, -0.4, 0.4, 0.8, 0.4},
+		collide_with_objects = false,
+		visual = "mesh",
+		mesh = "bike.b3d",
+		textures = default_tex("#FFFFFF", 150),
+		stepheight = setting_stepheight,
+		color = "#FFFFFF",
+	},
 	driver = nil,
-	color = "#FFFFFF",
 	alpha = 150,
 	old_driver = {},
 	v = 0,		  -- Current velocity
@@ -231,6 +233,7 @@ local function dismount_player(bike, exit)
 		local pinv = bike.driver:get_inventory()
 		if pinv then
 			pinv:set_stack("hand", 1, pinv:get_stack("old_hand", 1))
+			pinv:set_size("old_hand", 0)
 			if minetest.global_exists("mcl_skins") then
 				local node_id = mcl_skins.get_node_id_by_player(bike.driver)
 				pinv:set_stack("hand", 1, "mcl_meshhand:" .. node_id)
@@ -286,9 +289,13 @@ function bike.on_rightclick(self, clicker)
 			offset_third = offset_third
 		}
 		self.old_driver["hud"] = clicker:hud_get_flags()
-		clicker:get_inventory():set_stack("old_hand", 1, clicker:get_inventory():get_stack("hand", 1))
+	
 		-- Change the hand
-		clicker:get_inventory():set_stack("hand", 1, "bike:hand")
+		local inv = clicker:get_inventory()
+		inv:set_size("old_hand", 1)
+		inv:set_stack("old_hand", 1, inv:get_stack("hand", 1))
+		inv:set_stack("hand", 1, "bike:hand")
+
 		local attach = clicker:get_attach()
 		if attach and attach:get_luaentity() then
 			local luaentity = attach:get_luaentity()
@@ -349,6 +356,9 @@ function bike.on_punch(self, puncher)
 		end
 		-- Get color data
 		local meta = itemstack:get_meta()
+		if meta:get_string("paint_color") == "" or meta:get_string("alpha") == "" then
+			return -- No params set in formspec
+		end
 		self.color = meta:get_string("paint_color")
 		self.alpha = meta:get_string("alpha")
 		self.object:set_properties({
