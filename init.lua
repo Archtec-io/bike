@@ -245,6 +245,7 @@ local function dismount_player(bike, exit)
 			pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
 			bike.driver:set_pos(pos)
 		end
+		player_api.player_attached[bike.driver:get_player_name()] = false
 		bike.driver = nil
 	end
 end
@@ -313,6 +314,7 @@ function bike.on_rightclick(self, clicker)
 			hotbar = false,
 			wielditem = false,
 		})
+		player_api.player_attached[pname] = true
 		-- Look forward initially
 		clicker:set_look_horizontal(self.object:get_yaw())
 	end
