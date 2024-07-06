@@ -179,11 +179,11 @@ local function default_tex(metaltex, alpha)
 		"bike_metal_black.png",
 		"bike_metal_black.png",
 		"bike_blank.png",
-		"bike_tread.png",
+		"bike_spokes.png",
 		"bike_gear.png",
-		"bike_spokes.png",
 		"bike_tread.png",
 		"bike_spokes.png",
+		"bike_tread.png",
 	}
 end
 
@@ -200,6 +200,7 @@ local bike = {
 		textures = default_tex("#FFFFFF", 150),
 		stepheight = setting_stepheight,
 		color = "#FFFFFF",
+		makes_footstep_sound = true,
 	},
 	driver = nil,
 	alpha = 150,
@@ -275,11 +276,11 @@ function bike.on_rightclick(self, clicker)
 				"bike_metal_black.png",
 				"bike_metal_black.png",
 				get_player_skin(clicker).."^bike_helmet.png",
-				"bike_tread.png",
+				"bike_spokes.png",
 				"bike_gear.png",
-				"bike_spokes.png",
 				"bike_tread.png",
 				"bike_spokes.png",
+				"bike_tread.png",
 			},
 		})
 		-- Save the player's properties that we need to change
@@ -375,11 +376,11 @@ function bike.on_punch(self, puncher)
 				"bike_metal_black.png",
 				"bike_metal_black.png",
 				"bike_blank.png",
-				"bike_tread.png",
+				"bike_spokes.png",
 				"bike_gear.png",
-				"bike_spokes.png",
 				"bike_tread.png",
 				"bike_spokes.png",
+				"bike_tread.png",
 			},
 		})
 		return

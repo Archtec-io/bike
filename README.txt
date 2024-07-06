@@ -12,4 +12,4 @@ Hume2 (MIT)
 Authors of media (textures and model)
 -------------------------------------
 Textures: GreenDimond (MIT)
-Model: GreenDimond (MIT)
+Model: GreenDimond (MIT) + Fixes by APercy
