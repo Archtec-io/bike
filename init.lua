@@ -310,9 +310,8 @@ function bike.on_rightclick(self, clicker)
 		-- Set new properties and hide HUD
 		clicker:set_properties({visual_size = {x=0,y=0}})
 		clicker:set_attach(self.object, "body", {x = 0, y = 10, z = 5}, {x = 0, y = 0, z = 0})
-		clicker:set_eye_offset({x=0,y=-3,z=10},{x=0,y=0,z=5})
+		clicker:set_eye_offset({x=0,y=-2,z=5},{x=0,y=0,z=5})
 		clicker:hud_set_flags({
-			hotbar = false,
 			wielditem = false,
 		})
 		player_api.player_attached[pname] = true
