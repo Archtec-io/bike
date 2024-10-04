@@ -217,7 +217,7 @@ local bike = {
 	__is_bike__ = true,
 }
 
--- Dismont the player
+-- Dismount the player
 local function dismount_player(bike, exit)
 	bike.object:set_velocity({x = 0, y = 0, z = 0})
 	-- Make the bike empty again
@@ -291,7 +291,7 @@ function bike.on_rightclick(self, clicker)
 			offset_third = offset_third
 		}
 		self.old_driver["hud"] = clicker:hud_get_flags()
-	
+
 		-- Change the hand
 		local inv = clicker:get_inventory()
 		inv:set_size("old_hand", 1)
@@ -390,7 +390,7 @@ function bike.on_punch(self, puncher)
 	-- Make sure no one is riding
 	if not self.driver then
 		local pname = puncher:get_player_name()
-		if setting_ownable and self.owner and pname ~= self.owner then
+		if setting_ownable and self.owner and pname ~= self.owner and not minetest.get_player_privs(pname).staff then
 			minetest.chat_send_player(pname, "You cannot take " .. self.owner .. "'s bike.")
 			return
 		end
