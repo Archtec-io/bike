@@ -62,7 +62,11 @@ if minetest.get_modpath("mcl_rubber") then
 	rubber = "mcl_rubber:rubber"
 end
 
-if minetest.get_modpath("mcl_dye") then
+if minetest.get_modpath("mcl_dyes") then
+	red_dye = "mcl_dyes:red"
+	green_dye = "mcl_dyes:green"
+	blue_dye = "mcl_dyes:blue"
+elseif minetest.get_modpath("mcl_dye") then
 	red_dye = "mcl_dye:red"
 	green_dye = "mcl_dye:green"
 	blue_dye = "mcl_dye:blue"

@@ -13,3 +13,8 @@ Authors of media (textures and model)
 -------------------------------------
 Textures: GreenDimond (MIT)
 Model: GreenDimond (MIT) + Fixes by APercy
+
+IMPORTANT NOTICE:
+I'm not checking the GitLab repositories regularily.
+If you want any reply from me, please, contact me on Discord,
+else you may be waiting months for response.
